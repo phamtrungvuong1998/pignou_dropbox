@@ -1,0 +1,31 @@
+version: '3.8'  # Sử dụng phiên bản YAML 3.8 hoặc phiên bản phù hợp với Docker Compose của bạn.
+
+services:
+  pignou_backend:
+    build: .
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./app.conf:/etc/nginx/conf.d/app.conf
+    ports:
+      - "9000:80"
+    depends_on:
+      - pignou_db
+    networks:
+      - pignou_network
+
+  pignou_db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pignou_storage
+      MYSQL_USER: pignou
+      MYSQL_PASSWORD: pignou
+    ports:
+      - "3308:3306"
+    networks:
+      - pignou_network
+
+networks:
+  pignou_network:
+    driver: bridge
