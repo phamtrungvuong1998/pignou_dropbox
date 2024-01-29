@@ -4,22 +4,38 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['store']]);
+    }
+
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
+        try {
+            if (! $token = Auth::attempt(request(['email', 'password']))) {
+                return response()->json(['error' => 'Email hoặc mật khẩu không chính xác'], 401);
+            }
 
-        $request->session()->regenerate();
-
-        return response()->noContent();
+            return response()->json([
+                'access_token' => $token,
+                'expries_in' => auth()->factory()->getTTL() * 60 * 24 * 7,
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error' => $e->errors(),
+            ], 402);
+        }
     }
 
     /**
