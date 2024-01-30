@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -24,7 +24,11 @@ class AuthenticatedSessionController extends Controller
     {
         try {
             if (! $token = Auth::attempt(request(['email', 'password']))) {
-                return response()->json(['error' => 'Email hoặc mật khẩu không chính xác'], 401);
+                return response()->json(['errors' => 'Email hoặc mật khẩu không chính xác'], 401);
+            }
+
+            if (!$request->user()->hasVerifiedEmail()) {
+                $request->user()->sendEmailVerificationNotification();
             }
 
             return response()->json([
@@ -33,22 +37,25 @@ class AuthenticatedSessionController extends Controller
             ]);
         } catch (ValidationException $e) {
             return response()->json([
-                'error' => $e->errors(),
+                'errors' => $e->errors(),
             ], 402);
         }
+    }
+
+    public function getUser(): JsonResponse
+    {
+        return response()->json([
+            'data' => request()->user(),
+        ]);
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): Response
+    public function destroy(Request $request): JsonResponse
     {
-        Auth::guard('web')->logout();
+        Auth::logout();
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return response()->noContent();
+        return response()->json([]);
     }
 }

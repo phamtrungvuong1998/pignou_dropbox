@@ -37,8 +37,8 @@ class CustomVerifyEmail extends VerifyEmail implements ShouldQueue
         $id = $notifiable->getKey();
         $hash = sha1($notifiable->getEmailForVerification());
         $timeStamps = Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60))->timestamp;
-//        $url = "{$frontEndUrl}/verify-email/{$id}/{$hash}?expires={$timeStamps}";
-        $url = "localhost:9000/api/verify-email/{$id}/{$hash}?expires={$timeStamps}";
+       $url = "{$frontEndUrl}/verify-email/{$id}/{$hash}?expires={$timeStamps}";
+//         $url = "localhost:9000/api/verify-email/{$id}/{$hash}?expires={$timeStamps}";
 
         return $url;
     }
