@@ -5,7 +5,7 @@ import axios from "./axios.js";
 const store = createStore({
     state () {
         return {
-            token: undefined,
+            token: null,
             access_token: Cookies.get("access_token"),
             isLogin: false,
             emailVerify: false,
