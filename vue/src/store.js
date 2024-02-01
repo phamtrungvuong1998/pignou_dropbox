@@ -1,10 +1,12 @@
 import {createStore} from "vuex";
 import Cookies from "js-cookie";
 import axios from "./axios.js";
+import randomString from "random-string";
 
 const store = createStore({
     state () {
         return {
+            token: randomString({length: 20}),
             access_token: Cookies.get("access_token"),
             isLogin: false,
             emailVerify: false,
