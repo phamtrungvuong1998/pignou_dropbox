@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('hello');
-//});
+Route::get('/', function () {
+    return ['1321312'];
+});
 
 // require __DIR__.'/auth.php';
