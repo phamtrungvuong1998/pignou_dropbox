@@ -1,4 +1,4 @@
 import axios from "axios";
-axios.defaults.baseURL = 'http://localhost:9001/api';
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export default axios;

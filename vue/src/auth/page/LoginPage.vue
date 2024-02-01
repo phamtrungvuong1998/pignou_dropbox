@@ -11,6 +11,7 @@ export default {
     data() {
         return {
             dataLogin: {
+                _name: this.$store.state.token,
                 email: null,
                 password: null,
             },
