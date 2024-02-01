@@ -1,7 +1,6 @@
 import {createStore} from "vuex";
 import Cookies from "js-cookie";
 import axios from "./axios.js";
-import randomString from "random-string";
 
 const store = createStore({
     state () {

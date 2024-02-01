@@ -25,6 +25,7 @@ export default {
     },
     methods: {
         async handleLogin() {
+            console.log(this.dataLogin);
             this.dataError.errors = {
                 email: null,
                 password: null,
