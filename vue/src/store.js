@@ -6,7 +6,7 @@ import randomString from "random-string";
 const store = createStore({
     state () {
         return {
-            token: randomString({length: 35}),
+            token: Cookies.get("XSRF-TOKEN"),
             access_token: Cookies.get("access_token"),
             isLogin: false,
             emailVerify: false,
