@@ -11,7 +11,6 @@ export default {
     data() {
         return {
             dataLogin: {
-                token: this.$store.state.token,
                 email: null,
                 password: null,
             },
@@ -25,7 +24,6 @@ export default {
     },
     methods: {
         async handleLogin() {
-            console.log(this.dataLogin);
             this.dataError.errors = {
                 email: null,
                 password: null,
