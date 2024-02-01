@@ -10,6 +10,7 @@ services:
             - ./frontend.conf:/etc/nginx/conf.d/frontend.conf
         ports:
             - "80:80"
+            - "7000:7000"
         depends_on:
             - pignou_db
         networks:
