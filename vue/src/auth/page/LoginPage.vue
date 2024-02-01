@@ -11,7 +11,7 @@ export default {
     data() {
         return {
             dataLogin: {
-                _name: this.$store.state.token,
+                _token: this.$store.state.token,
                 email: null,
                 password: null,
             },
@@ -30,7 +30,11 @@ export default {
                 password: null,
             };
             try {
-                let data = await axios.post('/login', this.dataLogin);
+                let data = await axios.post('/login', this.dataLogin, {
+                    headers: {
+                        "Cache-Control" : "no-store",
+                    }
+                });
                 let response = data.data;
                 this.$store.commit("setAccessToken", response.access_token);
                 this.$router.push('/');
